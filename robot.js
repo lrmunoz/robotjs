@@ -7,7 +7,9 @@ function Node(grid, breadcrumb, point, previousNode) {
 }
 
 Node.prototype.nextNode = function() {
-  // Return an array of potential next nodes
+  // Function to return an array of potential next nodes
+  // It filters invalid points (obstacles or off-bounds)
+  // Checks if we have a Node in the breadcrumb already for each next node found
   var validCandidates = function(_this, candidatePoints) {
     let validCandidates = candidatePoints.filter(
       function(candidate) { return candidate !== null; }).map(
@@ -24,6 +26,7 @@ Node.prototype.nextNode = function() {
   };
 
   if (!this.nextNodes) {
+    // Initialize possible next nodes
     let previousPoint = this.previousNode ? this.previousNode.point : null;
     this.nextNodes = validCandidates(this,
       [getLeftPoint(this.grid, this.point, previousPoint),
@@ -33,6 +36,7 @@ Node.prototype.nextNode = function() {
   }
 
   var nextNode = null;
+  // If there are available next nodes, just remove the first one and return it
   if (this.nextNodes.length > 0) nextNode = this.nextNodes.splice(0, 1)[0];
   return nextNode;
 };
@@ -47,8 +51,7 @@ function moveRobot(grid, start, exit) {
   }
 
   var moves = 0;
-  var breadcrumb = [];
-  grid.forEach(function() { breadcrumb.push([]); });
+  var breadcrumb = initBreadcrumb(grid);
   var currentNode = new Node(grid, breadcrumb, start, null);
   breadcrumb[start.row][start.column] = currentNode;
   while (true) {
@@ -69,6 +72,12 @@ function moveRobot(grid, start, exit) {
     }
     moves += 1;
   }
+}
+
+function initBreadcrumb(grid) {
+  let breadcrumb = [];
+  grid.forEach(function() { breadcrumb.push([]); });
+  return breadcrumb;
 }
 
 function getLeftPoint(grid, point, previousPoint) {
