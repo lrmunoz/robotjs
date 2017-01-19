@@ -52,7 +52,7 @@ function moveRobot(grid, start, exit) {
   var currentNode = new Node(grid, breadcrumb, start, null);
   breadcrumb[start.row][start.column] = currentNode;
   while (true) {
-    // console.log(`row: ${currentNode.point.row}, column: ${currentNode.point.column}`);
+    console.log(`row: ${currentNode.point.row}, column: ${currentNode.point.column}`);
     if (comparePoints(currentNode.point, exit)) {
       console.log(`Arrived! (moves: ${moves})`);
       return;
@@ -111,22 +111,6 @@ function comparePoints(p1, p2) {
   return false
 }
 
-function calculateNextPoint(candidates) {
-  let cleanCandidates = candidates.filter(function(candidate) { return candidate !== null; });
-  if (cleanCandidates.length === 0) return null;
-  let randomCandidateIndex = getRandomIntInclusive(0, cleanCandidates.length - 1);
-  return cleanCandidates[randomCandidateIndex];
-}
-
-// From Mozilla MDN
-// Returns a random integer between min (included) and max (included)
-// Using Math.round() will give you a non-uniform distribution!
-function getRandomIntInclusive(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 let grid1 = [
   [0, 0, 0, 0],
   [0, 0, 1, 0],
@@ -160,8 +144,24 @@ let grid5 = [
   [1, 0, 0],
 ];
 
+let grid6 = [
+  [0, 1, 0, 0, 0],
+  [0, 1, 0, 1, 0],
+  [0, 1, 0, 1, 0],
+  [0, 0, 0, 1, 0],
+];
+
+let grid7 = [
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 0, 0, 1],
+  [0, 0, 1, 0],
+];
+
 moveRobot(grid1, {row: 1, column: 1}, {row: 3, column: 3});
 moveRobot(grid2, {row: 0, column: 0}, {row: 3, column: 3});
 moveRobot(grid3, {row: 0, column: 0}, {row: 3, column: 3});
 moveRobot(grid4, {row: 0, column: 0}, {row: 2, column: 2});
 moveRobot(grid5, {row: 0, column: 0}, {row: 2, column: 2});
+moveRobot(grid6, {row: 0, column: 0}, {row: 3, column: 4});
+moveRobot(grid7, {row: 0, column: 0}, {row: 3, column: 3});
