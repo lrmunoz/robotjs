@@ -11,7 +11,15 @@ Node.prototype.nextNode = function() {
   var validCandidates = function(_this, candidatePoints) {
     let validCandidates = candidatePoints.filter(
       function(candidate) { return candidate !== null; }).map(
-      function(point) { return new Node(_this.grid, point, _this); });
+      function(point) {
+        if (_this.breadcrumb[point.row][point.column]) {
+          return _this.breadcrumb[point.row][point.column];
+        } else {
+          let newNode = new Node(_this.grid, _this.breadcrumb, point, _this);
+          _this.breadcrumb[point.row][point.column] = newNode;
+          return newNode;
+        }
+      });
     return validCandidates;
   };
 
@@ -36,7 +44,7 @@ function moveRobot(grid, start, exit) {
   var currentNode = new Node(grid, breadcrumb, start, null);
   breadcrumb[start.row][start.column] = currentNode;
   while (true) {
-    console.log(`row: ${currentNode.point.row}, column: ${currentNode.point.column}`);
+    // console.log(`row: ${currentNode.point.row}, column: ${currentNode.point.column}`);
     if (comparePoints(currentNode.point, exit)) {
       console.log(`Arrived! (moves: ${moves})`);
       return;
@@ -141,12 +149,8 @@ let grid5 = [
   [1, 0, 0],
 ];
 
-// moveRobot(grid1, {row: 1, column: 1}, {row: 3, column: 3});
-
-// moveRobot(grid2, {row: 0, column: 0}, {row: 3, column: 3});
-
+moveRobot(grid1, {row: 1, column: 1}, {row: 3, column: 3});
+moveRobot(grid2, {row: 0, column: 0}, {row: 3, column: 3});
 moveRobot(grid3, {row: 0, column: 0}, {row: 3, column: 3});
-
-// moveRobot(grid4, {row: 0, column: 0}, {row: 2, column: 2});
-
-// moveRobot(grid5, {row: 0, column: 0}, {row: 2, column: 2});
+moveRobot(grid4, {row: 0, column: 0}, {row: 2, column: 2});
+moveRobot(grid5, {row: 0, column: 0}, {row: 2, column: 2});
