@@ -38,6 +38,14 @@ Node.prototype.nextNode = function() {
 };
 
 function moveRobot(grid, start, exit) {
+  if (getIsOutside(grid, start) || getIsObstacle(grid, start)) {
+    console.log("I can't start there!");
+  }
+
+  if (getIsOutside(grid, exit) || getIsObstacle(grid, exit)) {
+    console.log("I can't get there!");
+  }
+
   var moves = 0;
   var breadcrumb = [];
   grid.forEach(function() { breadcrumb.push([]); });
@@ -80,14 +88,17 @@ function getDownPoint(grid, point, previousPoint) {
 }
 
 function offsetPoint(grid, point, offset, previousPoint) {
-  let newRow = point.row + offset.offsetRow;
-  let newColumn = point.column + offset.offsetColumn;
-  if (newRow < 0 || newRow > grid.length - 1) return null;
-  if (newColumn < 0 || newColumn > grid[0].length - 1) return null;
-  let newPoint = {row: newRow, column: newColumn};
+  let newPoint = {row: point.row + offset.offsetRow, column: point.column + offset.offsetColumn};
+  if (getIsOutside(grid, newPoint)) return null;
   if (getIsObstacle(grid, newPoint)) return null;
   if (comparePoints(newPoint, previousPoint)) return null;
   return newPoint;
+}
+
+function getIsOutside(grid, point) {
+  if (point.row < 0 || point.row > grid.length - 1) return true;
+  if (point.column < 0 || point.column > grid[0].length - 1) return true;
+  return false;
 }
 
 function getIsObstacle(grid, point) {
