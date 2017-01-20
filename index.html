@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="An example in plain Javascript to solve a robot in a grid with obstacles problem">
+    <meta name="author" content="Luis Muñoz Hueso">
+    <title>Robot algorithm</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/robot.css">
+</head>
+<body>
+<div class="container">
+    <h1>Robot algorithm</h1>
+    <div>
+        <div class="row">
+            <div id="grid-container" class="col-md-6">
+                <div id="empty-grid">
+                    <p class="lead">Please generate a grid with the controls in "Generate grid"</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section">
+                    <h3>1. Generate grid</h3>
+                    <h3><small>Enter number of rows and columns for the grid (max 15)</small></h3>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="rows" class="col-xs-2 control-label">Rows</label>
+                            <div class="col-xs-2">
+                                <input type="number" min="1" max="15" class="form-control" id="rows">
+                            </div>
+                            <label for="columns" class="col-xs-2 control-label">Columns</label>
+                            <div class="col-xs-2">
+                                <input type="number" min="1" max="15" class="form-control" id="columns">
+                            </div>
+                            <div class="col-xs-4">
+                                <button type="button" class="btn btn-default">Generate</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="input-section">
+                    <h3>2. Add elements to grid</h3>
+                    <h3><small>Select the type of element to add, and then click on grid cells</small></h3>
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-xs-8">
+                                <label class="radio-inline">
+                                    <input type="radio" name="cellType" value="start"> Origin
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="cellType" value="end"> Destination
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="cellType" value="obstacle"> Obstacle
+                                </label>
+                            </div>
+                            <div class="col-xs-4">
+                                <button type="button" class="btn btn-default">Done</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="input-section">
+                    <h3>3. Simulate</h3>
+                    <h3><small>Select the algorithm and press Start to run simulation, or Reset to clean up</small></h3>
+                    <form>
+                        <div class="form-horizontal form-group">
+                            <label for="algorithm" class="col-xs-2 control-label">Algorithm</label>
+                            <div class="col-xs-5">
+                                <select class="form-control" id="algorithm" disabled>
+                                    <option>Custom</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-horizontal form-group">
+                            <div class="col-xs-6 text-center">
+                                <button type="button" class="btn btn-lg btn-default">Start</button>
+                            </div>
+                            <div class="col-xs-6 text-center">
+                                <button type="button" class="btn btn-lg btn-danger">Reset</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="js/robot.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
