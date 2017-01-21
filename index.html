@@ -19,7 +19,8 @@
                 <div id="empty-grid">
                     <p class="lead">Please generate a grid with the controls in "Generate grid"</p>
                 </div>
-                <div id="grid">This is the grid</div>
+                <div id="grid">
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="input-section">
@@ -27,16 +28,23 @@
                     <h3><small>Enter number of rows and columns for the grid (max 15)</small></h3>
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <label for="rows" class="col-xs-2 control-label">Rows</label>
-                            <div class="col-xs-2">
-                                <input type="number" min="2" max="15" class="form-control" id="rows">
+                            <div class="validation-container">
+                                <label for="rows" class="col-xs-2 control-label">Rows</label>
+                                <div class="col-xs-2">
+                                    <input type="number" min="2" max="15" class="form-control" id="rows" required>
+                                </div>
                             </div>
-                            <label for="columns" class="col-xs-2 control-label">Columns</label>
-                            <div class="col-xs-2">
-                                <input type="number" min="2" max="15" class="form-control" id="columns">
+                            <div class="validation-container">
+                                <label for="columns" class="col-xs-2 control-label">Columns</label>
+                                <div class="col-xs-2">
+                                    <input type="number" min="2" max="15" class="form-control" id="columns" required>
+                                </div>
                             </div>
                             <div class="col-xs-4">
                                 <button type="button" class="btn btn-default">Generate</button>
+                            </div>
+                            <div class="validation-explanation has-error">
+                                <span class="col-xs-12 validation help-block">Provide a value for rows/columns in the range 2, 15 (inclusive)</span>
                             </div>
                         </div>
                     </form>
@@ -71,7 +79,7 @@
                             <label for="algorithm" class="col-xs-2 control-label">Algorithm</label>
                             <div class="col-xs-5">
                                 <select class="form-control" id="algorithm" disabled>
-                                    <option>Custom</option>
+                                    <option>Walk</option>
                                 </select>
                             </div>
                         </div>
@@ -89,7 +97,7 @@
         </div>
     </div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="js/robot.js"></script>
 <script src="js/main.js"></script>

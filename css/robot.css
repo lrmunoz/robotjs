@@ -1,3 +1,8 @@
+body {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
 #grid-container {
     background: gainsboro;
     height: 500px;
@@ -18,6 +23,30 @@
     display: none;
 }
 
+#grid table {
+    background: beige;
+    table-layout: fixed;
+    border: dimgrey;
+}
+
+#grid table td {
+    width: 30px;
+    height: 30px;
+    border: 1px solid grey;
+}
+
+#grid table td:hover {
+    background: lightgrey;
+}
+
+.empty-cell {
+
+}
+
 #types-container {
+    display: none;
+}
+
+.validation-explanation {
     display: none;
 }
