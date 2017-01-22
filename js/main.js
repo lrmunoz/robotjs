@@ -1,14 +1,9 @@
 $(document).ready(function () {
   $('button:contains("Generate")').click(function(e) {
-    let validRows = isValidInput($("#rows"));
-    let validColumns = isValidInput($("#columns"));
-    if (validRows && validColumns) {
-      resetInputValidation();
+    if (isValidInputGridGeneration()) {
       $("#empty-grid").hide();
       $("#grid").show();
       generateGrid();
-    } else {
-
     }
   });
   document.addEventListener("click", function(e) {
@@ -33,30 +28,26 @@ $(document).ready(function () {
     }
   });
   $('button:contains("Start")').click(function(e) {
-    runAlgorithm();
+    let validInputGridGeneration = isValidInputGridGeneration();
+    let gridGenerated = isGridGenerated();
+    let correctElements = gridHasCorrectElements();
+    if (validInputGridGeneration && correctElements) {
+      runAlgorithm();
+    }
   });
 });
 
 function runAlgorithm() {
   let start = findCellWithClass("start");
   let end = findCellWithClass("end");
-  if (!start || !end) {
-    // TODO Provide validation feedback
-    return;
-  }
   let grid = initGrid();
-  if (!grid) {
-    // TODO Provide validation feedback
-    return;
-  }
-
   moveRobot(grid, start, end);
 }
 
 function findCellWithClass(className) {
   var coordinates = null;
   let cell = $(`#grid table td.${className}`);
-  if (cell) {
+  if (cell.length === 1) {
     let row = cell.attr("custom_attr_row");
     let column = cell.attr("custom_attr_column");
     coordinates = {row: parseInt(row), column: parseInt(column)};
@@ -87,20 +78,63 @@ function getSelectedElementType() {
   return $("input[name='cellType']:checked").val();
 }
 
-function isValidInput(element) {
-  if (element.is(":valid")) {
-    $(element).closest(".validation-container").removeClass("has-error");
+function isValidInputGridGeneration() {
+  let validRows = isValidInput($("#rows"));
+  let validColumns = isValidInput($("#columns"));
+  if (validRows && validColumns) {
+    resetInputValidation($("#rows"));
     return true;
   } else {
-    $(element).closest(".validation-container").addClass("has-error");
-    $(".validation-explanation").show();
     return false;
   }
 }
 
-function resetInputValidation() {
-  $(".validation-container").removeClass("has-error");
-  $(".validation-explanation").hide();
+function isGridGenerated() {
+  let validationContainer = $($("#rows")).closest(".validation-container");
+  let grid = $("#grid table");
+  if (grid.length === 0) {
+    validationContainer.addClass("has-error");
+    validationContainer.nextAll(".validation-explanation").show();
+    return false;
+  } else {
+    validationContainer.removeClass("has-error");
+    return true;
+  }
+}
+
+function gridHasCorrectElements() {
+  var valid = false;
+  let start = findCellWithClass("start");
+  let end = findCellWithClass("end");
+  let element = $("input[name='cellType'][value='start']");
+  if (start && end) {
+    resetInputValidation(element);
+    valid = true;
+  } else {
+    let validationContainer = $(element).closest(".validation-container");
+    validationContainer.addClass("has-error");
+    validationContainer.nextAll(".validation-explanation").show();
+    valid = false;
+  }
+  return valid;
+}
+
+function isValidInput(element) {
+  let validationContainer = $(element).closest(".validation-container");
+  if (element.is(":valid")) {
+    validationContainer.removeClass("has-error");
+    return true;
+  } else {
+    validationContainer.addClass("has-error");
+    validationContainer.nextAll(".validation-explanation").show();
+    return false;
+  }
+}
+
+function resetInputValidation(element) {
+  let validationContainer = $(element).closest(".validation-container");
+  validationContainer.removeClass("has-error");
+  validationContainer.nextAll(".validation-explanation").hide();
 }
 
 function generateGrid() {

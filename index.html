@@ -17,7 +17,7 @@
         <div class="row">
             <div id="grid-container" class="col-md-6">
                 <div id="empty-grid">
-                    <p class="lead">Please generate a grid with the controls in "Generate grid"</p>
+                    <p class="lead">Please generate a grid with the controls in "Generate grid" section</p>
                 </div>
                 <div id="grid">
                 </div>
@@ -31,20 +31,20 @@
                             <div class="validation-container">
                                 <label for="rows" class="col-xs-2 control-label">Rows</label>
                                 <div class="col-xs-2">
-                                    <input type="number" min="2" max="15" class="form-control" id="rows" required>
+                                    <input type="number" min="2" max="15" value="4" class="form-control" id="rows" required>
                                 </div>
                             </div>
                             <div class="validation-container">
                                 <label for="columns" class="col-xs-2 control-label">Columns</label>
                                 <div class="col-xs-2">
-                                    <input type="number" min="2" max="15" class="form-control" id="columns" required>
+                                    <input type="number" min="2" max="15" value="4" class="form-control" id="columns" required>
                                 </div>
                             </div>
                             <div class="col-xs-4">
                                 <button type="button" class="btn btn-default">Generate</button>
                             </div>
                             <div class="validation-explanation has-error">
-                                <span class="col-xs-12 validation help-block">Provide a value for rows/columns in the range 2, 15 (inclusive)</span>
+                                <span class="col-xs-12 validation help-block">Generate a grid with rows/columns in the range 2, 15 (inclusive)</span>
                             </div>
                         </div>
                     </form>
@@ -54,7 +54,7 @@
                     <h3><small>Select the type of element to add, and then click on grid cells</small></h3>
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <div class="col-xs-6">
+                            <div class="col-xs-6 validation-container">
                                 <label class="radio-inline">
                                     <input type="radio" name="cellType" value="start" checked> Origin
                                 </label>
@@ -66,7 +66,7 @@
                                 </label>
                             </div>
                             <div class="validation-explanation has-error">
-                                <span class="col-xs-12 validation help-block">Select type and then click on grid cells to add elements</span>
+                                <span class="col-xs-12 validation help-block">You must add one origin and one destination. Obstacles are optional</span>
                             </div>
                         </div>
                     </form>
@@ -74,7 +74,7 @@
                 <div class="input-section">
                     <h3>3. Simulate</h3>
                     <h3><small>Select the algorithm and press Start to run simulation, or Reset to clean up</small></h3>
-                    <form class="form-horizontal    ">
+                    <form class="form-horizontal">
                         <div class="form-horizontal form-group">
                             <label for="algorithm" class="col-xs-2 control-label">Algorithm</label>
                             <div class="col-xs-5">
