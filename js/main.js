@@ -13,8 +13,6 @@ $(document).ready(function () {
   });
   document.addEventListener("click", function(e) {
     if (e.target.tagName === 'TD') {
-      let row = e.target.getAttribute("custom_attr_row");
-      let column = e.target.getAttribute("custom_attr_column");
       if ($(e.target).hasClass("cell-set")) {
         $(e.target).removeClass();
       } else {
@@ -35,8 +33,55 @@ $(document).ready(function () {
     }
   });
   $('button:contains("Start")').click(function(e) {
+    runAlgorithm();
   });
 });
+
+function runAlgorithm() {
+  let start = findCellWithClass("start");
+  let end = findCellWithClass("end");
+  if (!start || !end) {
+    // TODO Provide validation feedback
+    return;
+  }
+  let grid = initGrid();
+  if (!grid) {
+    // TODO Provide validation feedback
+    return;
+  }
+
+  moveRobot(grid, start, end);
+}
+
+function findCellWithClass(className) {
+  var coordinates = null;
+  let cell = $(`#grid table td.${className}`);
+  if (cell) {
+    let row = cell.attr("custom_attr_row");
+    let column = cell.attr("custom_attr_column");
+    coordinates = {row: parseInt(row), column: parseInt(column)};
+  }
+  return coordinates;
+}
+
+function initGrid() {
+  let rows = $("#rows").val();
+  let columns = $("#columns").val();
+  let grid = [];
+  for (var i = 0; i < rows; i++) {
+    let row = [];
+    grid.push(row);
+    for (var j = 0; j < columns; j++) {
+      let cell = $(`#grid table td[custom_attr_row="${i}"][custom_attr_column="${j}"]`);
+      if (cell.hasClass("obstacle")) {
+        row.push(1);
+      } else {
+        row.push(0);
+      }
+    }
+  }
+  return grid;
+}
 
 function getSelectedElementType() {
   return $("input[name='cellType']:checked").val();
