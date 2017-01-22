@@ -35,16 +35,20 @@ body {
     border: 1px solid grey;
 }
 
-#grid table td:hover {
-    background: lightgrey;
+#grid table td.obstacle {
+    background: saddlebrown;
 }
 
-.empty-cell {
-
+#grid table td:hover:not(.cell-set) {
+    background: lightgrey;
 }
 
 #types-container {
     display: none;
+}
+
+#types-container + button {
+    margin-left: 10px;
 }
 
 .validation-explanation {

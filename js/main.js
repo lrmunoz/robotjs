@@ -11,6 +11,27 @@ $(document).ready(function () {
 
     }
   });
+  $("#add-elements-toggle").click(function(e) {
+    if ($("#add-elements-toggle").text() === "Click to add elements") {
+      $("#types-container").show();
+      $("#add-elements-toggle").text("Done");
+    } else {
+      $("#types-container").hide();
+      $("#add-elements-toggle").text("Click to add elements");
+    }
+  });
+  document.addEventListener("click", function(e) {
+    if (e.target.tagName === 'TD') {
+      let row = e.target.getAttribute("custom_attr_row");
+      let column = e.target.getAttribute("custom_attr_column");
+      if ($(e.target).hasClass("cell-set")) {
+        $(e.target).removeClass();  
+      } else {
+        $(e.target).addClass("cell-set");
+        $(e.target).addClass("obstacle");
+      }
+    }
+  });
   $('button:contains("Start")').click(function(e) {
   });
 });
@@ -42,7 +63,10 @@ function generateGrid() {
     let tr = document.createElement("tr");
     table.appendChild(tr);
     for (var j = 0; j < columns; j++) {
-      tr.appendChild(document.createElement("td"));
+      let td = document.createElement("td");
+      td.setAttribute("custom_attr_row", i);
+      td.setAttribute("custom_attr_column", j);
+      tr.appendChild(td);
     }
   }
 }
