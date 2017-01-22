@@ -54,19 +54,19 @@
                     <h3><small>Select the type of element to add, and then click on grid cells</small></h3>
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <div class="col-xs-12">
-                                <span id="types-container">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="cellType" value="start"> Origin
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="cellType" value="end"> Destination
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="cellType" value="obstacle"> Obstacle
-                                    </label>
-                                </span>
-                                <button id="add-elements-toggle" type="button" class="btn btn-default">Click to add elements</button>
+                            <div class="col-xs-6">
+                                <label class="radio-inline">
+                                    <input type="radio" name="cellType" value="start" checked> Origin
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="cellType" value="end"> Destination
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="cellType" value="obstacle"> Obstacle
+                                </label>
+                            </div>
+                            <div class="validation-explanation has-error">
+                                <span class="col-xs-12 validation help-block">Select type and then click on grid cells to add elements</span>
                             </div>
                         </div>
                     </form>

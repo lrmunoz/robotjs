@@ -11,30 +11,36 @@ $(document).ready(function () {
 
     }
   });
-  $("#add-elements-toggle").click(function(e) {
-    if ($("#add-elements-toggle").text() === "Click to add elements") {
-      $("#types-container").show();
-      $("#add-elements-toggle").text("Done");
-    } else {
-      $("#types-container").hide();
-      $("#add-elements-toggle").text("Click to add elements");
-    }
-  });
   document.addEventListener("click", function(e) {
     if (e.target.tagName === 'TD') {
       let row = e.target.getAttribute("custom_attr_row");
       let column = e.target.getAttribute("custom_attr_column");
       if ($(e.target).hasClass("cell-set")) {
-        $(e.target).removeClass();  
+        $(e.target).removeClass();
       } else {
         $(e.target).addClass("cell-set");
-        $(e.target).addClass("obstacle");
+        let type = getSelectedElementType();
+        if (type === 'start') {
+          $(".start").removeClass();
+          $(e.target).addClass("start");
+        } else if (type === 'end') {
+          $(".end").removeClass();
+          $(e.target).addClass("end");
+        } else if (type === 'obstacle') {
+          $(e.target).addClass("obstacle");
+        } else {
+          console.log("Unknown element type: " + type);
+        }
       }
     }
   });
   $('button:contains("Start")').click(function(e) {
   });
 });
+
+function getSelectedElementType() {
+  return $("input[name='cellType']:checked").val();
+}
 
 function isValidInput(element) {
   if (element.is(":valid")) {

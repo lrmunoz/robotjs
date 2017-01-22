@@ -35,20 +35,20 @@ body {
     border: 1px solid grey;
 }
 
+#grid table td.start {
+    background: url("../img/start_icon.png") no-repeat center;
+}
+
+#grid table td.end {
+    background: url("../img/finish_icon.png") no-repeat center;
+}
+
 #grid table td.obstacle {
-    background: saddlebrown;
+    background: url("../img/obstacle_icon.png") no-repeat center;
 }
 
 #grid table td:hover:not(.cell-set) {
     background: lightgrey;
-}
-
-#types-container {
-    display: none;
-}
-
-#types-container + button {
-    margin-left: 10px;
 }
 
 .validation-explanation {
