@@ -87,6 +87,12 @@ function BlindWalkAlgorithm() {
   }
 }
 
+function BreadthFirst() {
+  this.moveRobot = function(grid, start, exit, visitorFunc) {
+    return null;
+  }
+}
+
 function getLeftPoint(grid, point, previousPoint) {
   return offsetPoint(grid, point, {offsetRow: 0, offsetColumn: -1}, previousPoint)
 }
