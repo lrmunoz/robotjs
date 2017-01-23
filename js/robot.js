@@ -49,12 +49,6 @@ function BlindWalkAlgorithm() {
     return path.concat(climbPath);
   }
 
-  function initBreadcrumb(grid) {
-    let breadcrumb = [];
-    grid.forEach(function() { breadcrumb.push([]); });
-    return breadcrumb;
-  }
-
   this.moveRobot = function(grid, start, exit, visitorFunc) {
     if (getIsOutside(grid, start) || getIsObstacle(grid, start)) {
       return null;
@@ -71,6 +65,7 @@ function BlindWalkAlgorithm() {
     while (true) {
       visitorFunc(currentNode.point, currentNode.previousNode ? currentNode.previousNode.point : null);
       if (comparePoints(currentNode.point, exit)) {
+        // We arrived at destination, return the path that we found
         return currentNode.climb();
       }
       var nextNode = currentNode.nextNode();
@@ -88,9 +83,82 @@ function BlindWalkAlgorithm() {
 }
 
 function BreadthFirst() {
+  function Vertex(cell) {
+    this.cell = cell;
+    this.predecessor = null;
+
+    this.backtrace = function() {
+      let path = [this.cell];
+      if (!this.predecessor) return path;
+      let backtracePath = this.predecessor.backtrace();
+      return path.concat(backtracePath);
+    };
+  }
+
+  // Return adjacent vertices that are in the grid, aren't the predecessor, and haven't been visited yet (not in breadcrumb)
+  function calculateAdjacentVertices(grid, breadcrumb, vertex) {
+    let cell = vertex.cell;
+    let predecessorCell = vertex.predecessor ? vertex.predecessor.cell : null;
+    let adjacentCells = [
+      getLeftPoint(grid, cell, predecessorCell),
+      getRightPoint(grid, cell, predecessorCell),
+      getUpPoint(grid, cell, predecessorCell),
+      getDownPoint(grid, cell, predecessorCell)];
+    let vertices = adjacentCells.filter(
+      function(cell) {
+        return cell !== null && !breadcrumb[cell.row][cell.column];
+      }).map(
+      function(cell) {
+        return new Vertex(cell);
+      });
+    return vertices;
+  }
+
+  function addVertexToBreadcrumb(breadcrumb, vertex) {
+    breadcrumb[vertex.cell.row][vertex.cell.column] = vertex;
+  };
+
   this.moveRobot = function(grid, start, exit, visitorFunc) {
+    if (getIsOutside(grid, start) || getIsObstacle(grid, start)) {
+      return null;
+    }
+
+    if (getIsOutside(grid, exit) || getIsObstacle(grid, exit)) {
+      return null;
+    }
+
+    let startVertex = new Vertex(start);
+    let breadcrumb = initBreadcrumb(grid);
+    addVertexToBreadcrumb(breadcrumb, startVertex);
+    let vertexQueue = [startVertex];
+    var exitVertex = null;
+    while (vertexQueue.length > 0) {
+      let vertex = vertexQueue.splice(0, 1)[0];
+      visitorFunc(vertex.cell, null);
+      if (comparePoints(vertex.cell, exit)) {
+        exitVertex = vertex;
+      }
+      let adjacentVertices = calculateAdjacentVertices(grid, breadcrumb, vertex);
+      adjacentVertices.forEach(function(adjacentVertex) {
+        adjacentVertex.predecessor = vertex;
+        vertexQueue.push(adjacentVertex);
+        addVertexToBreadcrumb(breadcrumb, adjacentVertex);
+      });
+    }
+    if (exitVertex) {
+      // Success, return path we found by backtracing the generated graph
+      return exitVertex.backtrace();
+    }
     return null;
   }
+}
+
+/* Generic functions to handle grid */
+
+function initBreadcrumb(grid) {
+  let breadcrumb = [];
+  grid.forEach(function() { breadcrumb.push([]); });
+  return breadcrumb;
 }
 
 function getLeftPoint(grid, point, previousPoint) {
