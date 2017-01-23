@@ -58,3 +58,7 @@ body {
 .validation-explanation {
     display: none;
 }
+
+.result-message {
+    display: none;
+}

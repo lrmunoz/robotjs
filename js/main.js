@@ -35,12 +35,16 @@ $(document).ready(function () {
       runAlgorithm();
     }
   });
+  $('button:contains("Reset")').click(function(e) {
+  });
 });
 
 function runAlgorithm() {
   let start = findCellWithClass("start");
   let end = findCellWithClass("end");
   let grid = initGrid();
+  $("#success").hide();
+  $("#failure").hide();
   let path = moveRobot(grid, start, end, function(current, previous) {
     console.log(`row: ${current.row}, column: ${current.column}`);
   });
@@ -48,9 +52,10 @@ function runAlgorithm() {
     path.forEach(function(point) {
       let cell = $(`#grid table td[custom_attr_row="${point.row}"][custom_attr_column="${point.column}"]`);
       cell.addClass("visited");
+      $("#success").show();
     });
   } else {
-
+    $("#failure").show();
   }
 }
 
