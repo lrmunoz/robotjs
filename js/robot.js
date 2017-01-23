@@ -41,13 +41,20 @@ Node.prototype.nextNode = function() {
   return nextNode;
 };
 
-function moveRobot(grid, start, exit) {
+Node.prototype.climb = function() {
+  let path = [this.point];
+  if (!this.previousNode) return path;
+  let climbPath = this.previousNode.climb();
+  return path.concat(climbPath);
+}
+
+function moveRobot(grid, start, exit, visitorFunc) {
   if (getIsOutside(grid, start) || getIsObstacle(grid, start)) {
-    console.log("I can't start there!");
+    return null;
   }
 
   if (getIsOutside(grid, exit) || getIsObstacle(grid, exit)) {
-    console.log("I can't get there!");
+    return null;
   }
 
   var moves = 0;
@@ -55,18 +62,16 @@ function moveRobot(grid, start, exit) {
   var currentNode = new Node(grid, breadcrumb, start, null);
   breadcrumb[start.row][start.column] = currentNode;
   while (true) {
-    console.log(`row: ${currentNode.point.row}, column: ${currentNode.point.column}`);
+    visitorFunc(currentNode.point, currentNode.previousNode ? currentNode.previousNode.point : null);
     if (comparePoints(currentNode.point, exit)) {
-      console.log(`Arrived! (moves: ${moves})`);
-      return;
+      return currentNode.climb();
     }
     var nextNode = currentNode.nextNode();
     if (nextNode) {
       currentNode = nextNode;
     } else {
       if (!currentNode.previousNode) {
-        console.log(`I can't get there! (moves: ${moves})`);
-        return;
+        return null;
       }
       currentNode = currentNode.previousNode;
     }

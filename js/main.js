@@ -31,7 +31,7 @@ $(document).ready(function () {
     let validInputGridGeneration = isValidInputGridGeneration();
     let gridGenerated = isGridGenerated();
     let correctElements = gridHasCorrectElements();
-    if (validInputGridGeneration && correctElements) {
+    if (validInputGridGeneration && gridGenerated && correctElements) {
       runAlgorithm();
     }
   });
@@ -41,7 +41,17 @@ function runAlgorithm() {
   let start = findCellWithClass("start");
   let end = findCellWithClass("end");
   let grid = initGrid();
-  moveRobot(grid, start, end);
+  let path = moveRobot(grid, start, end, function(current, previous) {
+    console.log(`row: ${current.row}, column: ${current.column}`);
+  });
+  if (path) {
+    path.forEach(function(point) {
+      let cell = $(`#grid table td[custom_attr_row="${point.row}"][custom_attr_column="${point.column}"]`);
+      cell.addClass("visited");
+    });
+  } else {
+
+  }
 }
 
 function findCellWithClass(className) {
