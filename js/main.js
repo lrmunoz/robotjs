@@ -36,6 +36,7 @@ $(document).ready(function () {
     }
   });
   $('button:contains("Reset")').click(function(e) {
+    $("#grid table td.visited").removeClass("visited");
   });
 });
 
