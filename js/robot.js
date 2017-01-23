@@ -1,88 +1,90 @@
-function Node(grid, breadcrumb, point, previousNode) {
-  this.grid = grid;
-  this.breadcrumb = breadcrumb;
-  this.point = point;
-  this.previousNode = previousNode;
-  this.nextNodes = null;
-}
+function BlindWalkAlgorithm() {
+  function Node(grid, breadcrumb, point, previousNode) {
+    this.grid = grid;
+    this.breadcrumb = breadcrumb;
+    this.point = point;
+    this.previousNode = previousNode;
+    this.nextNodes = null;
+  }
 
-Node.prototype.nextNode = function() {
-  // Function to return an array of potential next nodes
-  // It filters invalid points (obstacles or off-bounds)
-  // Checks if we have a Node in the breadcrumb already for each next node found
-  var validCandidates = function(_this, candidatePoints) {
-    let validCandidates = candidatePoints.filter(
-      function(candidate) { return candidate !== null; }).map(
-      function(point) {
-        if (_this.breadcrumb[point.row][point.column]) {
-          return _this.breadcrumb[point.row][point.column];
-        } else {
-          let newNode = new Node(_this.grid, _this.breadcrumb, point, _this);
-          _this.breadcrumb[point.row][point.column] = newNode;
-          return newNode;
-        }
-      });
-    return validCandidates;
+  Node.prototype.nextNode = function() {
+    // Function to return an array of potential next nodes
+    // It filters invalid points (obstacles or off-bounds)
+    // Checks if we have a Node in the breadcrumb already for each next node found
+    var validCandidates = function(_this, candidatePoints) {
+      let validCandidates = candidatePoints.filter(
+        function(candidate) { return candidate !== null; }).map(
+        function(point) {
+          if (_this.breadcrumb[point.row][point.column]) {
+            return _this.breadcrumb[point.row][point.column];
+          } else {
+            let newNode = new Node(_this.grid, _this.breadcrumb, point, _this);
+            _this.breadcrumb[point.row][point.column] = newNode;
+            return newNode;
+          }
+        });
+      return validCandidates;
+    };
+
+    if (!this.nextNodes) {
+      // Initialize possible next nodes
+      let previousPoint = this.previousNode ? this.previousNode.point : null;
+      this.nextNodes = validCandidates(this,
+        [getLeftPoint(this.grid, this.point, previousPoint),
+          getRightPoint(this.grid, this.point, previousPoint),
+          getUpPoint(this.grid, this.point, previousPoint),
+          getDownPoint(this.grid, this.point, previousPoint)]);
+    }
+
+    var nextNode = null;
+    // If there are available next nodes, just remove the first one and return it
+    if (this.nextNodes.length > 0) nextNode = this.nextNodes.splice(0, 1)[0];
+    return nextNode;
   };
 
-  if (!this.nextNodes) {
-    // Initialize possible next nodes
-    let previousPoint = this.previousNode ? this.previousNode.point : null;
-    this.nextNodes = validCandidates(this,
-      [getLeftPoint(this.grid, this.point, previousPoint),
-        getRightPoint(this.grid, this.point, previousPoint),
-        getUpPoint(this.grid, this.point, previousPoint),
-        getDownPoint(this.grid, this.point, previousPoint)]);
+  Node.prototype.climb = function() {
+    let path = [this.point];
+    if (!this.previousNode) return path;
+    let climbPath = this.previousNode.climb();
+    return path.concat(climbPath);
   }
 
-  var nextNode = null;
-  // If there are available next nodes, just remove the first one and return it
-  if (this.nextNodes.length > 0) nextNode = this.nextNodes.splice(0, 1)[0];
-  return nextNode;
-};
-
-Node.prototype.climb = function() {
-  let path = [this.point];
-  if (!this.previousNode) return path;
-  let climbPath = this.previousNode.climb();
-  return path.concat(climbPath);
-}
-
-function moveRobot(grid, start, exit, visitorFunc) {
-  if (getIsOutside(grid, start) || getIsObstacle(grid, start)) {
-    return null;
+  function initBreadcrumb(grid) {
+    let breadcrumb = [];
+    grid.forEach(function() { breadcrumb.push([]); });
+    return breadcrumb;
   }
 
-  if (getIsOutside(grid, exit) || getIsObstacle(grid, exit)) {
-    return null;
-  }
-
-  var moves = 0;
-  var breadcrumb = initBreadcrumb(grid);
-  var currentNode = new Node(grid, breadcrumb, start, null);
-  breadcrumb[start.row][start.column] = currentNode;
-  while (true) {
-    visitorFunc(currentNode.point, currentNode.previousNode ? currentNode.previousNode.point : null);
-    if (comparePoints(currentNode.point, exit)) {
-      return currentNode.climb();
+  this.moveRobot = function(grid, start, exit, visitorFunc) {
+    if (getIsOutside(grid, start) || getIsObstacle(grid, start)) {
+      return null;
     }
-    var nextNode = currentNode.nextNode();
-    if (nextNode) {
-      currentNode = nextNode;
-    } else {
-      if (!currentNode.previousNode) {
-        return null;
+
+    if (getIsOutside(grid, exit) || getIsObstacle(grid, exit)) {
+      return null;
+    }
+
+    var moves = 0;
+    var breadcrumb = initBreadcrumb(grid);
+    var currentNode = new Node(grid, breadcrumb, start, null);
+    breadcrumb[start.row][start.column] = currentNode;
+    while (true) {
+      visitorFunc(currentNode.point, currentNode.previousNode ? currentNode.previousNode.point : null);
+      if (comparePoints(currentNode.point, exit)) {
+        return currentNode.climb();
       }
-      currentNode = currentNode.previousNode;
+      var nextNode = currentNode.nextNode();
+      if (nextNode) {
+        currentNode = nextNode;
+      } else {
+        if (!currentNode.previousNode) {
+          return null;
+        }
+        currentNode = currentNode.previousNode;
+      }
+      moves += 1;
     }
-    moves += 1;
   }
-}
-
-function initBreadcrumb(grid) {
-  let breadcrumb = [];
-  grid.forEach(function() { breadcrumb.push([]); });
-  return breadcrumb;
 }
 
 function getLeftPoint(grid, point, previousPoint) {

@@ -47,7 +47,8 @@ function runAlgorithm() {
   let grid = initGrid();
   $("#success").hide();
   $("#failure").hide();
-  let path = moveRobot(grid, start, end, function(current, previous) {
+  let algorithm = new BlindWalkAlgorithm();
+  let path = algorithm.moveRobot(grid, start, end, function(current, previous) {
     console.log(`row: ${current.row}, column: ${current.column}`);
   });
   if (path) {
